@@ -4,7 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import com.bloom.emotional.postcard.R
 import com.bloom.emotional.postcard.base.BaseActivity
@@ -20,39 +20,60 @@ import java.net.URL
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CoroutineScope(Dispatchers.IO).launch {
-            // 원본 원격 이미지 URL
-            val url = "https://t1.kakaocdn.net/kakaocorp/Service/KakaoTalk/pc/slide/talkpc_theme_01.jpg"
 
-            // Download the image using a background thread (e.g. using an AsyncTask or Kotlin coroutines)
-            val bitmap = try {
-                URL(url).openStream().use { stream ->
-                    BitmapFactory.decodeStream(stream)
-                }
-            } catch (e: IOException) {
-                // Handle error
-                null
-            }
+        val fragmentManager = supportFragmentManager
+        val storiesFragment = StoriesFragment()
+        val historyFragment = HistoryFragment()
+        fragmentManager.beginTransaction().replace(R.id.ll_fragment, storiesFragment).commitAllowingStateLoss()
+        binding.imgStories.isSelected = true
+        binding.imgStories.setOnClickListener {
+            binding.imgStories.isSelected = true
+            binding.imgHistory.isSelected = false
+            fragmentManager.beginTransaction().replace(R.id.ll_fragment, storiesFragment).commitAllowingStateLoss()
+        }
+        binding.imgHistory.setOnClickListener {
+            binding.imgStories.isSelected = false
+            binding.imgHistory.isSelected = true
+            fragmentManager.beginTransaction().replace(R.id.ll_fragment, historyFragment).commitAllowingStateLoss()
+        }
+        binding.imgShare.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                // 원본 원격 이미지 URL
+                val url = "https://t1.kakaocdn.net/kakaocorp/Service/KakaoTalk/pc/slide/talkpc_theme_01.jpg"
 
-            if (bitmap != null) {
-                // Save the bitmap to a file in the app's cache directory
-                val file = File(cacheDir, "shared_image.png")
-                FileOutputStream(file).use { outputStream ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                // Download the image using a background thread (e.g. using an AsyncTask or Kotlin coroutines)
+                val bitmap = try {
+                    URL(url).openStream().use { stream ->
+                        BitmapFactory.decodeStream(stream)
+                    }
+                } catch (e: IOException) {
+                    // Handle error
+                    null
                 }
 
-                // Share the file using an intent
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "image/png"
-                    putExtra(
-                        Intent.EXTRA_STREAM,
-                        FileProvider.getUriForFile(this@MainActivity, this@MainActivity.applicationContext.packageName + ".provider", file)
-                    )
-                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                if (bitmap != null) {
+                    // Save the bitmap to a file in the app's cache directory
+                    val file = File(cacheDir, "shared_image.png")
+                    FileOutputStream(file).use { outputStream ->
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    }
+
+                    // Share the file using an intent
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "image/png"
+                        putExtra(
+                            Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(this@MainActivity, this@MainActivity.applicationContext.packageName + ".provider", file)
+                        )
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    startActivity(Intent.createChooser(shareIntent, "Share image using"))
+                    viewModel.saveLinks(url)
                 }
-                startActivity(Intent.createChooser(shareIntent, "Share image using"))
             }
         }
     }
