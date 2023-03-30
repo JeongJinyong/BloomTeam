@@ -25,7 +25,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://riderapi.newtrack.io")
+            .baseUrl("")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
