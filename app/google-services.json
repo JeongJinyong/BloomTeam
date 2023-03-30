@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "378174770215",
+    "project_id": "bloomteam",
+    "storage_bucket": "bloomteam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378174770215:android:468c8fc5b94403e6591202",
+        "android_client_info": {
+          "package_name": "com.bloom.emotional.postcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378174770215-p6bo9dv4jg1j79mdgq04bdd3kv9kd1sj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bloom.emotional.postcard",
+            "certificate_hash": "bcd4cd286872a48628cb35dcce3b9b1baa450173"
+          }
+        },
+        {
+          "client_id": "378174770215-jd62kn6gnk0ng1d4gdri1jhq4p4q1vk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDSreQNroGzapgPd_-6UWkdGSgXOWAvZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378174770215-jd62kn6gnk0ng1d4gdri1jhq4p4q1vk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

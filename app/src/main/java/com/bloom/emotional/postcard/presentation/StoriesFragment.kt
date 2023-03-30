@@ -19,6 +19,6 @@ class StoriesFragment : BaseFragment<FragmentStoriesBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.imgStories.imageLoad("http://cakku.hae-seong.com/api/v1/files/1")
+        binding.imgStories.imageLoad("http://118.67.135.198:8000/bloom/content?date=2023-03-24&img_ext=JPG")
     }
 }

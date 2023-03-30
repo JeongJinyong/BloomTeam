@@ -1,14 +1,20 @@
 package com.bloom.emotional.postcard.presentation
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.bloom.emotional.postcard.R
 import com.bloom.emotional.postcard.base.BaseActivity
 import com.bloom.emotional.postcard.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.gun0912.tedpermission.coroutine.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +30,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            lifecycleScope.launch {
+                TedPermission.create()
+                    .setPermissions(Manifest.permission.POST_NOTIFICATIONS)
+                    .check()
+            }
+        }
 
         val fragmentManager = supportFragmentManager
         val storiesFragment = StoriesFragment()
@@ -73,8 +87,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
                     startActivity(Intent.createChooser(shareIntent, "Share image using"))
                     viewModel.saveLinks(url)
+                    viewModel.setShare()
                 }
             }
         }
+        firebaseMessaging()
     }
+
+    private fun firebaseMessaging() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            viewModel.setPush(token)
+        })
+    }
+
 }
