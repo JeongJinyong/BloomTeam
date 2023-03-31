@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bloom.emotional.postcard.R
 import com.bloom.emotional.postcard.base.BaseActivity
 import com.bloom.emotional.postcard.databinding.ActivityMainBinding
+import com.bloom.emotional.postcard.getCurrentTime
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gun0912.tedpermission.coroutine.TedPermission
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.imgShare.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 // 원본 원격 이미지 URL
-                val url = "https://t1.kakaocdn.net/kakaocorp/Service/KakaoTalk/pc/slide/talkpc_theme_01.jpg"
+                val url = "http://118.67.135.198:8000/bloom/content?date=${getCurrentTime()}&img_ext=JPG"
 
                 // Download the image using a background thread (e.g. using an AsyncTask or Kotlin coroutines)
                 val bitmap = try {

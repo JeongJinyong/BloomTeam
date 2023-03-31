@@ -9,7 +9,7 @@ plugins {
 android {
     signingConfigs {
         key {
-            storeFile file('/Users/jeongjin-yong/Desktop/work/BloomTeam/key')
+            storeFile file('../key')
             storePassword 'bloom123'
             keyAlias 'bloom'
             keyPassword 'bloom123'
