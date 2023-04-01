@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
 
     private val _history = MutableStateFlow<List<String>>(listOf())
     val history: StateFlow<List<String>> = _history
-
+    var currentLink = ""
     init {
         getLinks()
     }

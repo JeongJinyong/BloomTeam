@@ -27,11 +27,15 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         adapter.setItemClick {
             binding.groupHistoryDetail.isVisible = true
             binding.imgHistoryDetail.imageLoad(it)
+            viewModel.currentLink = it
         }
         binding.imgClose.setOnClickListener {
             binding.groupHistoryDetail.isVisible = false
+            viewModel.currentLink = ""
         }
+        viewModel.currentLink = ""
         adapter.setItems(viewModel.history.value)
+        binding.imgNoHistory.isVisible = viewModel.history.value.isEmpty()
         lifecycleScope.launch {
             viewModel.history.collect {
                 adapter.setItems(it)

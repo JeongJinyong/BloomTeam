@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -56,9 +57,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             fragmentManager.beginTransaction().replace(R.id.ll_fragment, historyFragment).commitAllowingStateLoss()
         }
         binding.imgShare.setOnClickListener {
+            if(viewModel.currentLink.isEmpty()){
+                Toast.makeText(this, "사진을 선택해주세요,", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             CoroutineScope(Dispatchers.IO).launch {
                 // 원본 원격 이미지 URL
-                val url = "http://118.67.135.198:8000/bloom/content?date=${getCurrentTime()}&img_ext=JPG"
+                val url = viewModel.currentLink
 
                 // Download the image using a background thread (e.g. using an AsyncTask or Kotlin coroutines)
                 val bitmap = try {

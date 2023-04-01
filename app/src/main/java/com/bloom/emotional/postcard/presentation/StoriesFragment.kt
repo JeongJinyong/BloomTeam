@@ -22,4 +22,9 @@ class StoriesFragment : BaseFragment<FragmentStoriesBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.imgStories.imageLoad("http://118.67.135.198:8000/bloom/content?date=${getCurrentTime()}&img_ext=JPG")
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.currentLink = "http://118.67.135.198:8000/bloom/content?date=${getCurrentTime()}&img_ext=JPG"
+    }
 }

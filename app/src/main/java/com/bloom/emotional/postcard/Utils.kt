@@ -7,7 +7,7 @@ import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun defaultImageRequestOptions() = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+fun defaultImageRequestOptions() = RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)
 fun ImageView.imageLoad(
     url: String,
     requestOptions: RequestOptions = defaultImageRequestOptions()
