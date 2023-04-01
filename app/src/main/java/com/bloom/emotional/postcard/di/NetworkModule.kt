@@ -1,5 +1,6 @@
 package com.bloom.emotional.postcard.di
 
+import com.bloom.emotional.postcard.BuildConfig
 import com.bloom.emotional.postcard.data.BloomApiService
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,7 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        if (BuildConfig.DEBUG) interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .build()
@@ -25,7 +26,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("http://118.67.135.198:8000")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
